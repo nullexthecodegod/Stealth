@@ -24,7 +24,7 @@ public class NormalAura extends AuraMode {
 	 * @param parent
 	 */
 	public NormalAura(Aura parent) {
-		super("Normal", parent);
+		super("Single", parent);
 	}
 
 	/*

@@ -27,6 +27,7 @@ import nl.x.client.cheat.cheats.fight.aura.AuraMode;
 import nl.x.client.cheat.cheats.fight.aura.impl.AACAura;
 import nl.x.client.cheat.cheats.fight.aura.impl.NormalAura;
 import nl.x.client.cheat.cheats.fight.aura.impl.TPAura;
+import nl.x.client.cheat.cheats.fight.aura.impl.Tick;
 
 /**
  * @author NullEX
@@ -34,8 +35,10 @@ import nl.x.client.cheat.cheats.fight.aura.impl.TPAura;
  */
 @Info(name = "Aura", category = Category.Fight)
 public class Aura extends Cheat {
-	public ArrayValue modeValue = new ArrayValue("Mode", Lists.newArrayList("Normal", "AAC", "TPAura"), "Normal");
-	public ArrayList<AuraMode> modes = Lists.newArrayList(new AACAura(this), new NormalAura(this), new TPAura(this));
+	public ArrayValue modeValue = new ArrayValue("Mode", Lists.newArrayList("Single", "Tick", "AAC", "TPAura"),
+			"Single");
+	public ArrayList<AuraMode> modes = Lists.newArrayList(new AACAura(this), new NormalAura(this), new TPAura(this),
+			new Tick(this));
 	public AuraMode mode;
 	public BooleanValue block = new BooleanValue("Block", true), unblock = new BooleanValue("Unblock", true),
 			crits = new BooleanValue("Crits", false), teams = new BooleanValue("Teams", true);
