@@ -23,7 +23,7 @@ import nl.x.client.cheat.cheats.move.flight.impl.Test;
  */
 @Info(name = "Flight")
 public class Flight extends Cheat {
-	public ArrayValue modeValue = new ArrayValue("Mode", Lists.newArrayList("AAC", "Normal", "Mineplex", "Test"),
+	public ArrayValue modeValue = new ArrayValue("Mode", Lists.newArrayList("Hypixel", "Normal", "Mineplex", "Test"),
 			"Normal");
 	public FlightMode mode;
 	public List<FlightMode> modes = Lists.newArrayList(new Normal(this), new Mineplex(this), new Hypixel(this),
@@ -41,10 +41,15 @@ public class Flight extends Cheat {
 	@Override
 	public void onEvent(Event e) {
 		if (e instanceof EventAlways) {
+			/*
+			 * Removed the break method that might have caused errors with the
+			 * for loop
+			 */
 			for (FlightMode t : this.modes) {
 				if (t.getName().equalsIgnoreCase(this.modeValue.getValue().toString())) {
 					this.mode = t;
-					break;
+				} else {
+					continue;
 				}
 			}
 		}
