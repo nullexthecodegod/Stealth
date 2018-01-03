@@ -123,17 +123,17 @@ public class Main {
 		Integer var40 = (Integer) var21.valueOf(var3);
 		Session var41 = new Session((String) var11.value(var21), var37, (String) var13.value(var21),
 				(String) var19.value(var21));
-		mc = new Minecraft(new GameConfiguration(new GameConfiguration.UserInformation(var41, var33, var24),
-				new GameConfiguration.DisplayInformation(var27, var28, var29, var30),
-				new GameConfiguration.FolderInformation(var34, var36, var35, var38),
-				new GameConfiguration.GameInformation(var31, var32),
-				new GameConfiguration.ServerInformation(var39, var40.intValue())));
 		Runtime.getRuntime().addShutdownHook(new Thread("Client Shutdown Thread") {
 			@Override
 			public void run() {
 				Minecraft.stopIntegratedServer();
 			}
 		});
+		mc = new Minecraft(new GameConfiguration(new GameConfiguration.UserInformation(var41, var33, var24),
+				new GameConfiguration.DisplayInformation(var27, var28, var29, var30),
+				new GameConfiguration.FolderInformation(var34, var36, var35, var38),
+				new GameConfiguration.GameInformation(var31, var32),
+				new GameConfiguration.ServerInformation(var39, var40.intValue())));
 		logger.log("5%", LogType.info);
 		Thread.currentThread().setName("Client thread");
 		mc.run();

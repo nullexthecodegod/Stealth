@@ -38,18 +38,15 @@ public class Jesus extends Cheat {
 			this.setSuffix(this.mode.getValue().toString());
 			switch (this.mode.getValue().toString().toLowerCase()) {
 				case "ncp":
-					if (isInLiquid() && mc.thePlayer.isInsideOfMaterial(Material.air) && !mc.thePlayer.isSneaking()) {
-						try {
-							if (this.timer.hasPassed(5000L)) {
-								mc.thePlayer.motionY = 1.0E-9;
-								mc.thePlayer.motionX *= 1.2;
-								mc.thePlayer.motionZ *= 1.2;
-								this.timer.reset();
-							}
-						} catch (Exception ex) {
-							ex.printStackTrace();
+					if ((isInLiquid() || mc.thePlayer.isInWater() || mc.thePlayer.isInLava())
+							&& !mc.thePlayer.isSneaking()) {
+						if (this.timer.hasPassed(5000L)) {
+							mc.thePlayer.motionY = 1.0E-9;
+							mc.thePlayer.motionX *= 1.2;
+							mc.thePlayer.motionZ *= 1.2;
+							this.timer.reset();
 						}
-						mc.thePlayer.motionY = 0.041;
+						mc.thePlayer.motionY = (mc.thePlayer.isInsideOfMaterial(Material.air) ? 0.041 : 0.087);
 					}
 					break;
 				case "aac":

@@ -124,7 +124,7 @@ public class NameTags extends Cheat {
 			if (stock.hasEffect() && (stock.getItem() instanceof ItemTool || stock.getItem() instanceof ItemArmor)) {
 				stock.stackSize = 1;
 			}
-			this.renderItemStack(stock, xOffset, -27);
+			this.renderItemStack(stock, xOffset, -30);
 			xOffset += 16;
 		}
 		final ItemStack[] renderStack = player.inventory.armorInventory;
@@ -132,7 +132,7 @@ public class NameTags extends Cheat {
 			final ItemStack armourStack = renderStack[index];
 			if (armourStack != null) {
 				final ItemStack renderStack2 = armourStack;
-				this.renderItemStack(renderStack2, xOffset, -27);
+				this.renderItemStack(renderStack2, xOffset, -30);
 				xOffset += 16;
 			}
 		}
