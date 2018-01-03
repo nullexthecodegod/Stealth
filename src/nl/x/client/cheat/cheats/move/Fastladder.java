@@ -6,6 +6,7 @@ import nl.x.api.annotations.Info;
 import nl.x.api.cheat.Cheat;
 import nl.x.api.cheat.value.values.ArrayValue;
 import nl.x.api.event.Event;
+import nl.x.api.event.impl.EventMove;
 import nl.x.api.event.impl.EventPacket;
 import nl.x.api.event.impl.EventUpdate;
 
@@ -46,6 +47,16 @@ public class Fastladder extends Cheat {
 					break;
 			}
 
+		}
+		if (e instanceof EventMove) {
+			EventMove event = (EventMove) e;
+			switch (this.mode.getValue().toString().toLowerCase()) {
+				case "ncp":
+					if (event.y > 0.0 && mc.thePlayer.isOnLadder()) {
+						event.y *= 2.5;
+					}
+					break;
+			}
 		}
 		super.onEvent(e);
 	}

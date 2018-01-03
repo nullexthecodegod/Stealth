@@ -61,20 +61,13 @@ public class Tick extends AuraMode {
 							&& this.timer.hasPassed(500)) {
 						float yaw = mc.thePlayer.rotationYaw;
 						float pitch = mc.thePlayer.rotationPitch;
-						mc.thePlayer.rotationYaw = RotationHelper.INSTANCE.getYaw(this.target);
-						mc.thePlayer.rotationPitch = RotationHelper.INSTANCE.getPitch(this.target);
 						this.swap(9, mc.thePlayer.inventory.currentItem, target, false, false);
 						attack(target, false);
-						if (mc.thePlayer.ticksExisted % 10 == 0) {
-							attack(target, true);
-						}
 						attack(target, false);
 						attack(target, true);
-						this.swap(9, mc.thePlayer.inventory.currentItem, target, true, false);
+						this.swap(9, mc.thePlayer.inventory.currentItem, target, false, false);
 						attack(target, false);
 						attack(target, true);
-						mc.thePlayer.rotationYaw = yaw;
-						mc.thePlayer.rotationPitch = pitch;
 						this.timer.reset();
 					}
 					break;

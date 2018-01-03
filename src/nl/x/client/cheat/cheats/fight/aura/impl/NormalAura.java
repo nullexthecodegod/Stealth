@@ -57,11 +57,7 @@ public class NormalAura extends AuraMode {
 							&& this.timer.hasPassed(200)) {
 						float yaw = mc.thePlayer.rotationYaw;
 						float pitch = mc.thePlayer.rotationPitch;
-						mc.thePlayer.rotationYaw = RotationHelper.INSTANCE.getYaw(this.target);
-						mc.thePlayer.rotationPitch = RotationHelper.INSTANCE.getPitch(this.target);
 						this.getParent().attack(this.target);
-						mc.thePlayer.rotationYaw = yaw;
-						mc.thePlayer.rotationPitch = pitch;
 						this.timer.reset();
 					}
 					break;

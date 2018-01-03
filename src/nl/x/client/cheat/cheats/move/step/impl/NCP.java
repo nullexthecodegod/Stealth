@@ -51,8 +51,7 @@ public class NCP extends StepMode {
 					mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,
 							mc.thePlayer.posY + 0.42, mc.thePlayer.posZ, mc.thePlayer.onGround));
 					mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,
-							mc.thePlayer.posY + 0.753, mc.thePlayer.posZ, mc.thePlayer.onGround));
-					mc.thePlayer.onGround = true;
+							mc.thePlayer.posY + 0.75, mc.thePlayer.posZ, mc.thePlayer.onGround));
 					this.resetNextTick = true;
 				}
 			}
