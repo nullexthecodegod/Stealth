@@ -25,7 +25,7 @@ import nl.x.api.event.Event;
 import nl.x.api.event.impl.EventAlways;
 import nl.x.client.cheat.cheats.fight.aura.AuraMode;
 import nl.x.client.cheat.cheats.fight.aura.impl.AACAura;
-import nl.x.client.cheat.cheats.fight.aura.impl.NormalAura;
+import nl.x.client.cheat.cheats.fight.aura.impl.SingleAura;
 import nl.x.client.cheat.cheats.fight.aura.impl.TPAura;
 import nl.x.client.cheat.cheats.fight.aura.impl.Tick;
 
@@ -37,7 +37,7 @@ import nl.x.client.cheat.cheats.fight.aura.impl.Tick;
 public class Aura extends Cheat {
 	public ArrayValue modeValue = new ArrayValue("Mode", Lists.newArrayList("Single", "Tick", "AAC", "TPAura"),
 			"Single");
-	public ArrayList<AuraMode> modes = Lists.newArrayList(new AACAura(this), new NormalAura(this), new TPAura(this),
+	public ArrayList<AuraMode> modes = Lists.newArrayList(new AACAura(this), new SingleAura(this), new TPAura(this),
 			new Tick(this));
 	public AuraMode mode;
 	public BooleanValue block = new BooleanValue("Block", true), unblock = new BooleanValue("Unblock", true),

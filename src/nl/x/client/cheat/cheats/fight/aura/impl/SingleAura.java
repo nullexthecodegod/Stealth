@@ -16,14 +16,14 @@ import nl.x.client.cheat.cheats.fight.aura.AuraMode;
  * @author NullEX
  *
  */
-public class NormalAura extends AuraMode {
+public class SingleAura extends AuraMode {
 	public EntityLivingBase target;
 	public Timer timer = new Timer();
 
 	/**
 	 * @param parent
 	 */
-	public NormalAura(Aura parent) {
+	public SingleAura(Aura parent) {
 		super("Single", parent);
 	}
 
@@ -46,7 +46,6 @@ public class NormalAura extends AuraMode {
 									this.mc.thePlayer.getCurrentEquippedItem().getMaxItemUseDuration());
 						}
 						float[] set = RotationHelper.INSTANCE.getRotationsNeeded(this.target);
-
 						e.setYaw(set[0]);
 						e.setPitch(set[1]);
 					}
@@ -54,10 +53,14 @@ public class NormalAura extends AuraMode {
 				case post:
 					if (Objects.nonNull(this.target) && mc.thePlayer
 							.getDistanceToEntity(this.target) <= this.getParent().reach.getValue().doubleValue()
-							&& this.timer.hasPassed(200)) {
+							&& this.timer.hasPassed(150)) {
 						float yaw = mc.thePlayer.rotationYaw;
 						float pitch = mc.thePlayer.rotationPitch;
+						mc.thePlayer.rotationYaw = e.getYaw();
+						mc.thePlayer.rotationPitch = e.getPitch();
 						this.getParent().attack(this.target);
+						mc.thePlayer.rotationYaw = yaw;
+						mc.thePlayer.rotationPitch = pitch;
 						this.timer.reset();
 					}
 					break;

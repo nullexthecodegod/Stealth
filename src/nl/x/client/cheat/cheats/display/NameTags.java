@@ -148,6 +148,7 @@ public class NameTags extends Cheat {
 		this.mc.getRenderItem().zLevel = 0.0f;
 		GlStateManager.disableBlend();
 		GlStateManager.scale(0.5, 0.5, 0.5);
+		this.mc.fontRendererObj.drawString("" + (stack.getMaxDamage() - stack.getItemDamage()), (x / 0.5) + 10, y, -1);
 		GlStateManager.disableDepth();
 		GlStateManager.disableLighting();
 		this.renderEnchantText(stack, x, y);

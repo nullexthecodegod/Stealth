@@ -39,19 +39,23 @@ public class NCP extends StepMode {
 			if (event.getState() == State.pre) {
 				this.preY = mc.thePlayer.posY;
 				if (this.canStep()) {
-					event.setStepHeight(1.0f);
+					event.setStepHeight(1.125f);
 				}
 			} else {
-				if (event.getStepHeight() != 1.0f) {
+				if (event.getStepHeight() != 1.125f) {
 					return;
 				}
 				double offset = mc.thePlayer.boundingBox.minY - this.preY;
 				if (offset > 0.6) {
-					mc.timer.timerSpeed = 0.3f;
+					mc.timer.timerSpeed = (offset >= 1.125 ? 0.21f : 0.3f);
 					mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,
 							mc.thePlayer.posY + 0.42, mc.thePlayer.posZ, mc.thePlayer.onGround));
 					mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,
-							mc.thePlayer.posY + 0.75, mc.thePlayer.posZ, mc.thePlayer.onGround));
+							mc.thePlayer.posY + 0.753, mc.thePlayer.posZ, mc.thePlayer.onGround));
+					if (offset >= 1.125) {
+						mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
+								mc.thePlayer.posX, mc.thePlayer.posY + 1.0, mc.thePlayer.posZ, mc.thePlayer.onGround));
+					}
 					this.resetNextTick = true;
 				}
 			}

@@ -2,6 +2,7 @@ package nl.x.client.cheat.cheats.move;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.potion.Potion;
 import nl.x.api.annotations.Info;
 import nl.x.api.cheat.Cheat;
 import nl.x.api.cheat.value.values.ArrayValue;
@@ -40,20 +41,14 @@ public class Speed extends Cheat {
 			this.setSuffix(this.mode.getValue().toString());
 			switch (this.mode.getValue().toString().toLowerCase()) {
 				case "onground":
-					if (mc.thePlayer.moveForward != 0.0 || mc.thePlayer.moveStrafing != 0.0) {
-						if (event.getState().equals(State.pre)) {
-							if (mc.thePlayer.onGround) {
-								if (!hack) {
-									mc.timer.timerSpeed = 1.1f;
-									event.setY(event.getY() + 0.42);
-								}
-								MoveUtils.setSpeed(MoveUtils.INSTANCE.getBaseMoveSpeed() * (hack ? 1.3 : 0.705));
-							}
-							if (hack) {
-								mc.timer.timerSpeed = 1.0f;
-								mc.thePlayer.motionY = -1;
-							}
+					if (event.getState().equals(State.pre)) {
+						if (mc.thePlayer.moveForward == 0.0f && mc.thePlayer.moveStrafing == 0.0f || mc.theWorld == null
+								|| mc.thePlayer.isOnLiquid() || mc.thePlayer.isInLiquid() || !mc.thePlayer.onGround) {
+							return;
 						}
+						event.setY(event.getY()
+								+ (mc.thePlayer.ticksExisted % 2 == 0 ? this.getHighestOffset(0.42) : 0.0));
+						mc.thePlayer.motionY -= 0.01;
 					}
 					break;
 				case "sloth":
@@ -164,6 +159,17 @@ public class Speed extends Cheat {
 					}
 					++this.stage;
 					break;
+				case "onground":
+					if (mc.thePlayer.moveForward == 0.0f && mc.thePlayer.moveStrafing == 0.0f || mc.theWorld == null
+							|| mc.thePlayer.isInWater() || !mc.thePlayer.onGround) {
+						return;
+					}
+					double speed = this.getMovementSpeed() * (mc.thePlayer.ticksExisted % 2 != 0 ? 1.0 : 1.69);
+					double x = -Math.sin(mc.thePlayer.getDirection()) * speed;
+					double z = Math.cos(mc.thePlayer.getDirection()) * speed;
+					event.x = x;
+					event.z = z;
+					break;
 			}
 		}
 		super.onEvent(e);
@@ -179,6 +185,43 @@ public class Speed extends Cheat {
 		this.lastDist = 0.0;
 		this.stage = 4;
 		super.disable();
+	}
+
+	private static final double WALK_SPEED = 0.21585;
+	private static final double RUN_SPEED = 0.2806;
+
+	public double getBaseMovementSpeed() {
+		return mc.thePlayer.isSprinting() ? 0.2806 : 0.21585;
+	}
+
+	public double getMovementSpeed() {
+		if (!mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
+			return this.getBaseMovementSpeed();
+		}
+		return this.getBaseMovementSpeed() * 1.0
+				+ 0.06 * (mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier() + 1);
+	}
+
+	public boolean willCollide(double x, double z) {
+		for (int i = 1; i < 4; ++i) {
+			if (mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer,
+					mc.thePlayer.getEntityBoundingBox().offset(x * i, 0.0, z * i)).isEmpty())
+				continue;
+			return true;
+		}
+		return false;
+	}
+
+	public double getHighestOffset(double max) {
+		for (double i = 0.0; i < max; i += 0.01) {
+			for (int offset : new int[] { -2, -1, 0, 1, 2 }) {
+				if (mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, mc.thePlayer.getEntityBoundingBox()
+						.offset(mc.thePlayer.motionX * offset, i, mc.thePlayer.motionZ * offset)).size() <= 0)
+					continue;
+				return i - 0.01;
+			}
+		}
+		return max;
 	}
 
 }

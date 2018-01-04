@@ -53,6 +53,20 @@ public class Phase extends Cheat {
 			double z = Math.sin((direction + 90.0F) * 3.141592653589793D / 180.0D) * 0.2D;
 			switch (this.mode.getValue().toString().toLowerCase()) {
 				case "new":
+					if (this.isInsideBlock() && mc.thePlayer.isSneaking()) {
+						double[] offset = { x * 1.2D, 1.0D, z * 1.2D };
+						mc.thePlayer.boundingBox.offset(0, 0.4, 0);
+						mc.getNetHandler().addToSendQueue(
+								new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX + offset[0], 8.67,
+										mc.thePlayer.posZ + offset[2], mc.thePlayer.onGround));
+						double last = mc.thePlayer.posY;
+						mc.thePlayer.motionY = -1.0;
+						mc.thePlayer.setPosition(mc.thePlayer.posX + offset[0], last - 0.01,
+								mc.thePlayer.posZ + offset[2]);
+						mc.thePlayer.setPosition(mc.thePlayer.posX - (offset[0] / 2), last + 0.01,
+								mc.thePlayer.posZ - (offset[2] / 2));
+						event.setY(-1);
+					}
 					break;
 				case "aris":
 					if (event.getState().equals(State.pre) && this.isInsideBlock() && mc.thePlayer.isSneaking()) {
