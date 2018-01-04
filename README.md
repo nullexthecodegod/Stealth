@@ -1,7 +1,7 @@
 # Stealth
 > a not so stealthy client
 
-1. *No offical realse as of now*
+1. *No offical release (fuck you vlad) as of now*
 
 2. *Getting worked on quite offten*
 
