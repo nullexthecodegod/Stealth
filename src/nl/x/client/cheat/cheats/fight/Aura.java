@@ -91,14 +91,20 @@ public class Aura extends Cheat {
 
 	public void crit() {
 		if (mc.thePlayer.onGround) {
-			this.mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
-					this.mc.thePlayer.posX, this.mc.thePlayer.posY + 0.05, this.mc.thePlayer.posZ, false));
-			this.mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
-					this.mc.thePlayer.posX, this.mc.thePlayer.posY, this.mc.thePlayer.posZ, false));
-			this.mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
-					this.mc.thePlayer.posX, this.mc.thePlayer.posY + 0.012511, this.mc.thePlayer.posZ, false));
-			this.mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
-					this.mc.thePlayer.posX, this.mc.thePlayer.posY, this.mc.thePlayer.posZ, false));
+			boolean v = true;
+			if (v) {
+				C03PacketPlayer.C04PacketPlayerPosition reset = new C03PacketPlayer.C04PacketPlayerPosition(
+						this.mc.thePlayer.posX, this.mc.thePlayer.posY, this.mc.thePlayer.posZ, false);
+				reset.setMoving(false);
+				this.mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
+						this.mc.thePlayer.posX, this.mc.thePlayer.posY + 0.05, this.mc.thePlayer.posZ, false));
+				this.mc.thePlayer.sendQueue.addToSendQueue(reset);
+				this.mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
+						this.mc.thePlayer.posX, this.mc.thePlayer.posY + 0.012511, this.mc.thePlayer.posZ, false));
+				this.mc.thePlayer.sendQueue.addToSendQueue(reset);
+			} else {
+				mc.thePlayer.motionY = 0.05;
+			}
 		}
 	}
 

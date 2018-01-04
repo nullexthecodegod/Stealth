@@ -87,7 +87,7 @@ public class AutoHeal extends Cheat {
 						}
 						switch (event.getState()) {
 							case pre:
-								event.setPitch(this.jump.getValue() ? 90 : -90);
+								event.setPitch(this.jump.getValue() ? -90 : 90);
 								break;
 							case post:
 								if ((potSlot = this.getPotionFromInventory()) != -1
@@ -97,12 +97,12 @@ public class AutoHeal extends Cheat {
 												.getStack();
 										if (stack != null && this.isSplashPot(stack)) {
 											final int oldSlot = this.mc.thePlayer.inventory.currentItem;
-											mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(i - 36));
 											float pitch = mc.thePlayer.rotationPitch;
-											mc.thePlayer.rotationPitch = this.jump.getValue() ? 90 : -90;
+											mc.thePlayer.rotationPitch = this.jump.getValue() ? -90 : 90;
+											mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(i - 36));
 											mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(stack));
-											mc.thePlayer.rotationPitch = pitch;
 											mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(oldSlot));
+											mc.thePlayer.rotationPitch = pitch;
 											this.timer.reset();
 											break;
 										}
