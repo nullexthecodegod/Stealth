@@ -1,4 +1,4 @@
-package nl.x.client.gui.alt;
+package nl.x.api.utils.misc;
 
 import java.lang.reflect.Field;
 

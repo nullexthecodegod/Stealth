@@ -4,6 +4,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.potion.Potion;
@@ -99,6 +100,33 @@ public class AutoHeal extends Cheat {
 											final int oldSlot = this.mc.thePlayer.inventory.currentItem;
 											float pitch = mc.thePlayer.rotationPitch;
 											mc.thePlayer.rotationPitch = this.jump.getValue() ? -90 : 90;
+											if (!this.jump.getValue()) {
+												mc.getNetHandler()
+														.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(
+																mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ,
+																mc.thePlayer.rotationYaw,
+																this.jump.getValue() ? -90 : 90, true));
+											} else {
+												mc.getNetHandler()
+														.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(
+																mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ,
+																mc.thePlayer.rotationYaw,
+																this.jump.getValue() ? -90 : 90, true));
+												mc.getNetHandler()
+														.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
+																mc.thePlayer.posX, mc.thePlayer.posY + 0.42,
+																mc.thePlayer.posZ, true));
+												mc.getNetHandler()
+														.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
+																mc.thePlayer.posX, mc.thePlayer.posY + 0.75,
+																mc.thePlayer.posZ, true));
+												mc.getNetHandler()
+														.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
+																mc.thePlayer.posX, mc.thePlayer.posY + 1.0,
+																mc.thePlayer.posZ, true));
+												mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + 1.0,
+														mc.thePlayer.posZ);
+											}
 											mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(i - 36));
 											mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(stack));
 											mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(oldSlot));

@@ -1,18 +1,16 @@
 package nl.x.api.utils.misc;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import com.google.common.collect.Lists;
+import net.minecraft.client.Minecraft;
+import nl.x.client.Client;
 
 /**
  * @author NullEX
@@ -21,56 +19,78 @@ import com.google.common.collect.Lists;
 public enum FileUtils {
 	INSTANCE;
 
-	public List<String> readFile(File file) throws Exception {
-		List<String> result = Lists.newArrayList();
-		Scanner s = new Scanner(file);
-		while (s.hasNextLine()) {
-			result.add(s.nextLine());
-		}
-		s.close();
-		return result;
-	}
-
-	public FileWriter createWriter(File file) {
-		return new FileWriter(file);
-	}
-
-	public class FileWriter {
-		public File file;
-
-		/**
-		 * @param file
-		 */
-		public FileWriter(File file) {
-			this.file = file;
-		}
-
-		/**
-		 * Writes text to a file
-		 * 
-		 * @param text
-		 */
-		public void write(String text) {
+	public static List<String> read(File inputFile) {
+		ArrayList<String> readContent;
+		readContent = new ArrayList<String>();
+		BufferedReader reader = null;
+		try {
 			try {
-				Files.write(Paths.get(file.toURI()), Arrays.asList(text));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		public void write(final File outputFile, final List<String> writeContent, final boolean overrideContent) {
-			try {
-				final Writer out = new BufferedWriter(
-						new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8"));
-				for (final String outputLine : writeContent) {
-					out.write(String.valueOf(outputLine) + System.getProperty("line.separator"));
+				String currentReadLine2;
+				reader = new BufferedReader(new FileReader(inputFile));
+				while ((currentReadLine2 = reader.readLine()) != null) {
+					readContent.add(currentReadLine2);
 				}
-				out.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+
+			}
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (IOException var5_9) {
+				// empty catch block
 			}
 		}
+		return readContent;
+	}
 
+	public static void write(File outputFile, List<String> writeContent, boolean overrideContent) {
+		BufferedWriter writer = null;
+		try {
+			try {
+				writer = new BufferedWriter(new FileWriter(outputFile, !overrideContent));
+				for (String outputLine : writeContent) {
+					writer.write(outputLine);
+					writer.flush();
+					writer.newLine();
+				}
+			} catch (IOException outputLine) {
+				try {
+					if (writer != null) {
+						writer.close();
+					}
+				} catch (IOException var7_7) {
+				}
+			}
+		} finally {
+			try {
+				if (writer != null) {
+					writer.close();
+				}
+			} catch (IOException var7_9) {
+			}
+		}
+	}
+
+	public static File getConfigDir() {
+		File file = new File(Minecraft.getMinecraft().mcDataDir, Client.info.get("name"));
+		if (!file.exists()) {
+			file.mkdir();
+		}
+		return file;
+	}
+
+	public static File getConfigFile(String name) {
+		File file = new File(FileUtils.getConfigDir(), String.format("%s.txt", name));
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException var2_2) {
+				// empty catch block
+			}
+		}
+		return file;
 	}
 
 }

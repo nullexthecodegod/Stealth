@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.Proxy;
 import java.net.URL;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -23,6 +24,10 @@ import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
+import com.mojang.authlib.Agent;
+import com.mojang.authlib.exceptions.AuthenticationException;
+import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -35,6 +40,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Session;
+import nl.x.client.gui.alt.GuiAltmanager;
+import nl.x.client.gui.alt.account.Account;
 
 /**
  * @author NullEX
@@ -43,17 +51,10 @@ import net.minecraft.util.MathHelper;
 public enum Utilites {
 	INSTANCE;
 
-	public static Minecraft mc;
-	public static Gson gson;
-	public static Gson prettyGson;
-	public static JsonParser jsonParser;
-
-	static {
-		mc = Minecraft.getMinecraft();
-		gson = new Gson();
-		prettyGson = new GsonBuilder().setPrettyPrinting().create();
-		jsonParser = new JsonParser();
-	}
+	public static Minecraft mc = Minecraft.getMinecraft();
+	public static Gson gson = new Gson();
+	public static Gson prettyGson = new GsonBuilder().setPrettyPrinting().create();
+	public static JsonParser jsonParser = new JsonParser();
 
 	public double round(double value, int places) {
 		if (places < 0) {
@@ -78,6 +79,51 @@ public enum Utilites {
 		}
 		in.close();
 		return lines.toArray(new String[lines.size()]);
+	}
+
+	public String login(String name, String password) {
+		GuiAltmanager.info = "§aLoggin in";
+		YggdrasilAuthenticationService a = new YggdrasilAuthenticationService(Proxy.NO_PROXY, "");
+		YggdrasilUserAuthentication b = (YggdrasilUserAuthentication) a.createUserAuthentication(Agent.MINECRAFT);
+		b.setUsername(name);
+		b.setPassword(password);
+		String displayText = "";
+		if (password == "") {
+			SessionUtils.setSession(new Session(name, name, "0", "legacy"));
+			for (Account c : GuiAltmanager.accounts) {
+				if (c.getEmail().equals(name)) {
+					c.setUsername(SessionUtils.getSession().getUsername());
+				} else {
+					continue;
+				}
+			}
+			GuiAltmanager.saveAlts();
+			return "§aLogged In (Cracked)";
+		}
+		try {
+			b.logIn();
+			SessionUtils.setSession(new Session(b.getSelectedProfile().getName(),
+					b.getSelectedProfile().getId().toString(), b.getAuthenticatedToken(), "legacy"));
+			for (Account c : GuiAltmanager.accounts) {
+				if (c.getEmail().equals(name)) {
+					c.setUsername(SessionUtils.getSession().getUsername());
+				} else {
+					continue;
+				}
+			}
+			GuiAltmanager.saveAlts();
+			displayText = "§aLogged In §8(§7" + SessionUtils.getSession().getUsername() + "§8)";
+		} catch (AuthenticationException var7) {
+			if (!var7.getMessage().contains("Invalid username or password.")
+					&& !var7.getMessage().toLowerCase().contains("account migrated")) {
+				displayText = "§cCannot contact authentication server!";
+			} else {
+				displayText = "§cWrong password! (" + name + ")";
+			}
+		} catch (NullPointerException var8) {
+			displayText = "§cWeird error: This alt doesn't have a username!";
+		}
+		return displayText;
 	}
 
 	public static double[] getMoveToLoc(final EntityLivingBase entity) {

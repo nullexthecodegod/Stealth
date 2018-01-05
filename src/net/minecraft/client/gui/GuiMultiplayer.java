@@ -16,7 +16,7 @@ import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.network.LanServerDetector;
 import net.minecraft.client.network.OldServerPinger;
 import net.minecraft.client.resources.I18n;
-import nl.x.client.gui.alt.New.GuiAccountSelection;
+import nl.x.client.gui.alt.GuiAltmanager;
 import nl.x.client.gui.multiplayer.GuiCleanUp;
 import nl.x.client.gui.multiplayer.GuiServerFinder;
 import nl.x.client.gui.multiplayer.GuiUseProxy;
@@ -196,7 +196,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
 			} else if (button.id == 13) {
 				mc.displayGuiScreen(new GuiCleanUp(this));
 			} else if (button.id == 999) {
-				mc.displayGuiScreen(new GuiAccountSelection(this));
+				mc.displayGuiScreen(new GuiAltmanager(this));
 			}
 		}
 	}

@@ -34,7 +34,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.demo.DemoWorldServer;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.WorldInfo;
-import nl.x.client.gui.alt.New.GuiAccountSelection;
+import nl.x.client.gui.alt.GuiAltmanager;
 
 public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 	private static final AtomicInteger field_175373_f = new AtomicInteger(0);
@@ -280,8 +280,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 		}
 
 		if (button.id == 14 && this.realmsButton.visible) {
-			// this.mc.displayGuiScreen(new GuiDirectLogin(this));
-			this.mc.displayGuiScreen(new GuiAccountSelection(this));
+			this.mc.displayGuiScreen(new GuiAltmanager(this));
 		}
 		if (button.id == 1337) {
 		}

@@ -1,19 +1,16 @@
 package nl.x.client;
 
-import java.io.File;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.Display;
 
 import com.google.common.collect.Maps;
 
-import net.minecraft.client.Minecraft;
 import nl.x.api.cheat.Cheat;
 import nl.x.api.command.CommandManager;
 import nl.x.api.utils.misc.Logger;
 import nl.x.api.utils.misc.Logger.LogType;
 import nl.x.client.cheat.CheatManager;
-import nl.x.client.gui.alt.New.AccountManager;
 
 /**
  * @author NullEX
@@ -24,15 +21,14 @@ public enum Client {
 
 	public static HashMap<String, String> info = Maps.newHashMap();
 	public Logger logger;
-	public AccountManager accountManager;
 	public int serverFinderThreads = 128;
-	public File dir;
-	public File cheats;
 
 	public void initiate() {
 		/*
-		 * Old protection class [not used anymore due to me losing of pastebin
-		 * account :(] Property.whitelist();
+		 * Old protection class [ not used anymore due to me losing of pastebin
+		 * account :( ]
+		 * 
+		 * Property.whitelist();
 		 * 
 		 */
 		try {
@@ -51,16 +47,10 @@ public enum Client {
 		this.info.put("version", "0.1");
 		this.info.put("name", "Stealth");
 		this.info.put("dev", "NullEX");
-		dir = new File(Minecraft.getMinecraft().mcDataDir, this.info.get("name"));
-		if (!dir.exists()) {
-			dir.mkdirs();
-		}
-		cheats = new File(dir, "Cheats.txt");
 		CheatManager.INSTANCE.load();
 		String version = this.info.get("version");
 		Display.setTitle(this.info.get("name") + (version.contains(".") ? " v" : " b") + version);
 		this.logger = new Logger(this.info.get("name"));
-		this.accountManager = new AccountManager();
 		CommandManager.INSTANCE.init();
 		Runtime.getRuntime().addShutdownHook(new Thread(this.info.get("name") + " Shutdown Thread") {
 			@Override

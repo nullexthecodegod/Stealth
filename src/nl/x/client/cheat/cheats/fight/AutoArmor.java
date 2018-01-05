@@ -9,6 +9,7 @@ import nl.x.api.annotations.Info;
 import nl.x.api.cheat.Cheat;
 import nl.x.api.event.Event;
 import nl.x.api.event.impl.EventUpdate;
+import nl.x.api.utils.misc.Timer;
 
 /**
  * @author Aristhena
@@ -16,6 +17,7 @@ import nl.x.api.event.impl.EventUpdate;
  */
 @Info(name = "AutoArmor")
 public class AutoArmor extends Cheat {
+	public Timer timer = new Timer();
 
 	/*
 	 * @see nl.x.api.cheat.Cheat#onEvent(nl.x.api.event.Event)
@@ -38,11 +40,10 @@ public class AutoArmor extends Cheat {
 						}
 					}
 				}
-				boolean hack = mc.thePlayer.ticksExisted % 5 == 0;
-				if (slotID != -1 && hack) {
+				if (slotID != -1 && this.timer.hasPassed(300)) {
 					mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, slotID, 0, 1,
 							mc.thePlayer);
-					hack = false;
+					this.timer.reset();
 				}
 			}
 		}
