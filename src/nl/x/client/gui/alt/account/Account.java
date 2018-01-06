@@ -146,6 +146,13 @@ public class Account {
 	 */
 	public void setUsername(String username) {
 		this.username = username;
+		this.width = 0;
+		if (mc.fontRendererObj.getStringWidth(this.username) > width) {
+			width = mc.fontRendererObj.getStringWidth(this.username + " ");
+		}
+		if (mc.fontRendererObj.getStringWidth(this.hidden) > width) {
+			width = mc.fontRendererObj.getStringWidth(this.hidden + " ");
+		}
 	}
 
 	/**

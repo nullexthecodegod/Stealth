@@ -42,6 +42,7 @@ public class HUD extends Cheat {
 							- mc.fontRendererObj.getStringWidth("Branch - " + Client.info.get("dev") + " "),
 					Display.getHeight() / 2 - mc.fontRendererObj.FONT_HEIGHT, -1);
 			this.components.forEach(Component::render);
+			Client.INSTANCE.tabFactory.render();
 		}
 		super.onEvent(e);
 	}

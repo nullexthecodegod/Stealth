@@ -44,11 +44,18 @@ public class ArmorRender {
 			if (this.x > 18) {
 				x = 18;
 			}
-			double ratio = (stack.getMaxDamage() - stack.getItemDamage()) / (stack.getMaxDamage() / 3);
-			Gui.drawRect(Display.getWidth() / 2 - this.x, y, Display.getWidth() / 2 - x + 1, y + 19,
+			double ratio = 1;
+			if (stack.getMaxDamage() > 0) {
+				ratio = (stack.getMaxDamage() - stack.getItemDamage()) / (stack.getMaxDamage() / 3);
+			}
+			Gui.drawRect(Display.getWidth() / 2 - this.x, y,
+					Display.getWidth() / 2 - x + 1, y
+							+ 19,
 					Utilites.INSTANCE.interpolate(ratio,
-							stack.getItemDamage() >= stack.getMaxDamage() / 2 ? this.colors[1] : this.colors[0],
-							stack.getItemDamage() >= stack.getMaxDamage() / 2 ? this.colors[2] : this.colors[1]));
+							(stack.getMaxDamage() > 0 ? (stack.getItemDamage() >= stack.getMaxDamage() / 2
+									? this.colors[1] : this.colors[0]) : this.colors[2]),
+							(stack.getMaxDamage() > 0 ? (stack.getItemDamage() >= stack.getMaxDamage() / 2
+									? this.colors[2] : this.colors[1]) : this.colors[2])));
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(1.5, 0.3, 0);
 			this.mc.getRenderItem().renderItemAndEffectIntoGUI(stack, Display.getWidth() / 2 - this.x, y + 1);

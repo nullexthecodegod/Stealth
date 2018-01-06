@@ -11,6 +11,7 @@ import nl.x.api.command.CommandManager;
 import nl.x.api.utils.misc.Logger;
 import nl.x.api.utils.misc.Logger.LogType;
 import nl.x.client.cheat.CheatManager;
+import nl.x.client.gui.tab.TabFactory;
 
 /**
  * @author NullEX
@@ -21,6 +22,7 @@ public enum Client {
 
 	public static HashMap<String, String> info = Maps.newHashMap();
 	public Logger logger;
+	public TabFactory tabFactory = new TabFactory();
 	public int serverFinderThreads = 128;
 
 	public void initiate() {
@@ -47,10 +49,11 @@ public enum Client {
 		this.info.put("version", "0.1");
 		this.info.put("name", "Stealth");
 		this.info.put("dev", "NullEX");
-		CheatManager.INSTANCE.load();
 		String version = this.info.get("version");
 		Display.setTitle(this.info.get("name") + (version.contains(".") ? " v" : " b") + version);
 		this.logger = new Logger(this.info.get("name"));
+		CheatManager.INSTANCE.load();
+		tabFactory.init();
 		CommandManager.INSTANCE.init();
 		Runtime.getRuntime().addShutdownHook(new Thread(this.info.get("name") + " Shutdown Thread") {
 			@Override
@@ -68,6 +71,7 @@ public enum Client {
 				c.toggle();
 			}
 		}
+		this.tabFactory.action(key);
 	}
 
 	public static OS getPlatform() {
