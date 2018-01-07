@@ -43,7 +43,7 @@ public enum CheatManager {
 								.toLowerCase();
 				String name = clazz.getSimpleName();
 				cheat.setInfo(a.name().equalsIgnoreCase("null") ? clazz.getSimpleName() : a.name(), a.desc(), a.bind(),
-						a.shown(), (a.category().equals(Category.None) ? Category.valueOf(category) : a.category()));
+						a.shown(), Category.valueOf(category));
 				if (a.enabled()) {
 					cheat.setEnabled(true);
 				}

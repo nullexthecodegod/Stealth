@@ -24,8 +24,6 @@ public class OldClickGUI extends GuiScreen {
 		int x = 5;
 		if (this.windows.isEmpty()) {
 			for (Category c : Category.values()) {
-				if (c.equals(Category.None))
-					continue;
 				CategoryWindow w = new CategoryWindow(x, 10, c);
 				this.windows.add(w);
 				x += w.width + 7;

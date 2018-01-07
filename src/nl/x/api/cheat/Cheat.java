@@ -153,6 +153,6 @@ public class Cheat {
 	}
 
 	public enum Category {
-		None, Fight, Move, Player, Display, Ghost;
+		Fight, Move, Player, Display;
 	}
 }

@@ -55,6 +55,36 @@ public enum RenderUtil implements Utils {
 		GL11.glDisable(2848);
 	}
 
+	public void drawHexagon(float x, float y, int color) {
+		final float alpha = (color >> 24 & 0xFF) / 255.0f;
+		final float red = (color >> 16 & 0xFF) / 255.0f;
+		final float green = (color >> 8 & 0xFF) / 255.0f;
+		final float blue = (color & 0xFF) / 255.0f;
+		GL11.glColor4f(red, green, blue, alpha);
+		GL11.glBegin(GL11.GL_POLYGON);
+		for (int i = 0; i < 6; ++i) {
+			GL11.glVertex2d(x + Math.sin(i / 6.0 * 2 * 3.141592653589793),
+					y + Math.cos(i / 6.0 * 2 * 3.141592653589793));
+		}
+		GL11.glEnd();
+	}
+
+	public void drawOutlinedHexagon(float x, float y, int color) {
+		final float alpha = (color >> 24 & 0xFF) / 255.0f;
+		final float red = (color >> 16 & 0xFF) / 255.0f;
+		final float green = (color >> 8 & 0xFF) / 255.0f;
+		final float blue = (color & 0xFF) / 255.0f;
+		GlStateManager.pushMatrix();
+		GL11.glColor4f(red, green, blue, alpha);
+		GL11.glBegin(GL11.GL_LINE_STRIP);
+		for (int i = 0; i < 6; ++i) {
+			GL11.glVertex2d(x + Math.sin(i / 6.0 * 2 * 3.141592653589793),
+					y + Math.cos(i / 6.0 * 2 * 3.141592653589793));
+		}
+		GL11.glEnd();
+		GlStateManager.popMatrix();
+	}
+
 	public void enableLineBlending() {
 		this.enableBlending();
 		GL11.glEnable(2848);
@@ -286,6 +316,76 @@ public enum RenderUtil implements Utils {
 				0.0f);
 		rend.texture(u / img, (v + height) / img).vertex(x, y + height, 0.0f)
 				.texture((u + width) / img, (v + height) / img).vertex(x + width, y + height, 0.0f).bind();
+	}
+
+	public static void drawRoundedRect(float x2, float y2, float x1, float y1, int borderC, int insideC) {
+		enableGL2D();
+		GL11.glScalef(0.5f, 0.5f, 0.5f);
+		drawVLine(x2 *= 2.0f, (y2 *= 2.0f) + 1.0f, (y1 *= 2.0f) - 2.0f, borderC);
+		drawVLine((x1 *= 2.0f) - 1.0f, y2 + 1.0f, y1 - 2.0f, borderC);
+		drawHLine(x2 + 2.0f, x1 - 3.0f, y2, borderC);
+		drawHLine(x2 + 2.0f, x1 - 3.0f, y1 - 1.0f, borderC);
+		drawHLine(x2 + 1.0f, x2 + 1.0f, y2 + 1.0f, borderC);
+		drawHLine(x1 - 2.0f, x1 - 2.0f, y2 + 1.0f, borderC);
+		drawHLine(x1 - 2.0f, x1 - 2.0f, y1 - 2.0f, borderC);
+		drawHLine(x2 + 1.0f, x2 + 1.0f, y1 - 2.0f, borderC);
+		drawRect(x2 + 1.0f, y2 + 1.0f, x1 - 1.0f, y1 - 1.0f, insideC);
+		GL11.glScalef(2.0f, 2.0f, 2.0f);
+		disableGL2D();
+	}
+
+	public static void drawRoundedRect(int x2, int y2, int x1, int y1, int color) {
+		enableGL2D();
+		GL11.glScalef(0.5f, 0.5f, 0.5f);
+		drawVLine(x2 *= 2.0f, (y2 *= 2.0f) + 1.0f, (y1 *= 2.0f) - 2.0f, color);
+		drawVLine((x1 *= 2.0f) - 1.0f, y2 + 1.0f, y1 - 2.0f, color);
+		drawHLine(x2 + 2.0f, x1 - 3.0f, y2, color);
+		drawHLine(x2 + 2.0f, x1 - 3.0f, y1 - 1.0f, color);
+		drawHLine(x2 + 1.0f, x2 + 1.0f, y2 + 1.0f, color);
+		drawHLine(x1 - 2.0f, x1 - 2.0f, y2 + 1.0f, color);
+		drawHLine(x1 - 2.0f, x1 - 2.0f, y1 - 2.0f, color);
+		drawHLine(x2 + 1.0f, x2 + 1.0f, y1 - 2.0f, color);
+		drawRect(x2 + 1.0f, y2 + 1.0f, x1 - 1.0f, y1 - 1.0f, color);
+		GL11.glScalef(2.0f, 2.0f, 2.0f);
+		disableGL2D();
+	}
+
+	public static void drawHLine(float par1, float par2, final float par3, final int par4) {
+		if (par2 < par1) {
+			final float var5 = par1;
+			par1 = par2;
+			par2 = var5;
+		}
+		drawRect(par1, par3, par2 + 1.0f, par3 + 1.0f, par4);
+	}
+
+	public static void enableGL2D() {
+		GL11.glDisable(2929);
+		GL11.glEnable(3042);
+		GL11.glDisable(3553);
+		GL11.glBlendFunc(770, 771);
+		GL11.glDepthMask(true);
+		GL11.glEnable(2848);
+		GL11.glHint(3154, 4354);
+		GL11.glHint(3155, 4354);
+	}
+
+	public static void disableGL2D() {
+		GL11.glEnable(3553);
+		GL11.glDisable(3042);
+		GL11.glEnable(2929);
+		GL11.glDisable(2848);
+		GL11.glHint(3154, 4352);
+		GL11.glHint(3155, 4352);
+	}
+
+	public static void drawVLine(final float par1, float par2, float par3, final int par4) {
+		if (par3 < par2) {
+			final float var5 = par2;
+			par2 = par3;
+			par3 = var5;
+		}
+		drawRect(par1, par2 + 1.0f, par1 + 1.0f, par3, par4);
 	}
 
 	public void bindColor(Tessellator tess, int r, int g, int b, int a) {

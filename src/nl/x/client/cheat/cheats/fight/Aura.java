@@ -17,7 +17,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import nl.x.api.annotations.Info;
 import nl.x.api.cheat.Cheat;
-import nl.x.api.cheat.Cheat.Category;
 import nl.x.api.cheat.value.values.ArrayValue;
 import nl.x.api.cheat.value.values.BooleanValue;
 import nl.x.api.cheat.value.values.NumberValue;
@@ -33,7 +32,7 @@ import nl.x.client.cheat.cheats.fight.aura.impl.Tick;
  * @author NullEX
  *
  */
-@Info(name = "Aura", category = Category.Fight)
+@Info(name = "Aura")
 public class Aura extends Cheat {
 	public ArrayValue modeValue = new ArrayValue("Mode", Lists.newArrayList("Single", "Tick", "AAC", "TPAura"),
 			"Single");

@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 
 import nl.x.api.annotations.Info;
 import nl.x.api.cheat.Cheat;
-import nl.x.api.cheat.Cheat.Category;
 import nl.x.api.cheat.value.values.ArrayValue;
 import nl.x.client.gui.click.New.NewClickGui;
 import nl.x.client.gui.click.old.OldClickGUI;
@@ -15,7 +14,7 @@ import nl.x.client.gui.click.old.OldClickGUI;
  * @author NullEX
  *
  */
-@Info(name = "ClickGUI", category = Category.Display, bind = Keyboard.KEY_RSHIFT, shown = false)
+@Info(name = "ClickGUI", bind = Keyboard.KEY_RSHIFT, shown = false)
 public class GUI extends Cheat {
 	public ArrayValue mode = new ArrayValue("Mode", Lists.newArrayList("Old", "New"), "Old");
 

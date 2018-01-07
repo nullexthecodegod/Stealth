@@ -63,12 +63,18 @@ public class Tick extends AuraMode {
 						float pitch = mc.thePlayer.rotationPitch;
 						mc.thePlayer.rotationYaw = e.getYaw();
 						mc.thePlayer.rotationPitch = e.getPitch();
-						this.swap(9, mc.thePlayer.inventory.currentItem, target, false, false);
-						attack(target, true);
-						attack(target, true);
-						this.swap(9, mc.thePlayer.inventory.currentItem, target, false, true);
-						attack(target, false);
-						attack(target, true);
+						this.swap(9, mc.thePlayer.inventory.currentItem, this.target, false, false);
+						this.attack(this.target, false);
+						this.attack(this.target, false);
+						this.attack(this.target, false);
+						this.attack(this.target, true);
+						this.swap(9, mc.thePlayer.inventory.currentItem, this.target, false, false);
+						if (mc.thePlayer.ticksExisted % 3 == 0) {
+							this.attack(this.target, false);
+							this.attack(this.target, true);
+							this.attack(this.target, false);
+							this.attack(this.target, false);
+						}
 						mc.thePlayer.rotationYaw = yaw;
 						mc.thePlayer.rotationPitch = pitch;
 						this.timer.reset();
@@ -111,8 +117,6 @@ public class Tick extends AuraMode {
 		mc.thePlayer.swingItem();
 		if (crit && mc.thePlayer.onGround) {
 			this.getParent().crit();
-		} else {
-			Minecraft.getMinecraft().thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer());
 		}
 		Minecraft.getMinecraft().thePlayer.sendQueue
 				.addToSendQueue(new C02PacketUseEntity(entity, C02PacketUseEntity.Action.ATTACK));

@@ -9,8 +9,6 @@ import java.lang.annotation.Target;
 
 import org.lwjgl.input.Keyboard;
 
-import nl.x.api.cheat.Cheat.Category;
-
 @Documented
 @Retention(RUNTIME)
 @Target(TYPE)
@@ -30,5 +28,4 @@ public @interface Info {
 
 	int bind() default Keyboard.KEY_NONE;
 
-	Category category() default Category.None;
 }

@@ -1,5 +1,6 @@
 package nl.x.client;
 
+import java.awt.Font;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.Display;
@@ -10,8 +11,9 @@ import nl.x.api.cheat.Cheat;
 import nl.x.api.command.CommandManager;
 import nl.x.api.utils.misc.Logger;
 import nl.x.api.utils.misc.Logger.LogType;
+import nl.x.api.utils.render.cfont.CFontRenderer;
 import nl.x.client.cheat.CheatManager;
-import nl.x.client.gui.tab.TabFactory;
+import nl.x.client.gui.tab.TabGui;
 
 /**
  * @author NullEX
@@ -22,7 +24,8 @@ public enum Client {
 
 	public static HashMap<String, String> info = Maps.newHashMap();
 	public Logger logger;
-	public TabFactory tabFactory = new TabFactory();
+	public TabGui tab;
+	public CFontRenderer tahoma = new CFontRenderer(new Font("Helvetica", 0, 19), true, true);
 	public int serverFinderThreads = 128;
 
 	public void initiate() {
@@ -52,9 +55,10 @@ public enum Client {
 		String version = this.info.get("version");
 		Display.setTitle(this.info.get("name") + (version.contains(".") ? " v" : " b") + version);
 		this.logger = new Logger(this.info.get("name"));
+		this.tab = new TabGui();
 		CheatManager.INSTANCE.load();
-		tabFactory.init();
 		CommandManager.INSTANCE.init();
+		tab.init();
 		Runtime.getRuntime().addShutdownHook(new Thread(this.info.get("name") + " Shutdown Thread") {
 			@Override
 			public void run() {
@@ -71,7 +75,7 @@ public enum Client {
 				c.toggle();
 			}
 		}
-		this.tabFactory.action(key);
+		tab.keyPress(key);
 	}
 
 	public static OS getPlatform() {
