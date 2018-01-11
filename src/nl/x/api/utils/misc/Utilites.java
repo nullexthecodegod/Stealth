@@ -204,9 +204,6 @@ public enum Utilites {
 		}
 	}
 
-	public static boolean getTrue() {
-		return true;
-	}
 
 	public static void deleteFolder(final Path path) throws IOException {
 		Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
