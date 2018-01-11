@@ -46,7 +46,7 @@ import nl.x.client.gui.alt.GuiAltmanager;
 import nl.x.client.gui.alt.account.Account;
 
 /**
- * @author NullEX
+ * @author NullEX (like only 4-5 things)
  *
  */
 public enum Utilites {
@@ -91,7 +91,7 @@ public enum Utilites {
 	}
 
 	public String login(String name, String password) {
-		GuiAltmanager.info = "§aLoggin in";
+		GuiAltmanager.info = "Â§aLoggin in";
 		YggdrasilAuthenticationService a = new YggdrasilAuthenticationService(Proxy.NO_PROXY, "");
 		YggdrasilUserAuthentication b = (YggdrasilUserAuthentication) a.createUserAuthentication(Agent.MINECRAFT);
 		b.setUsername(name);
@@ -107,7 +107,7 @@ public enum Utilites {
 				}
 			}
 			GuiAltmanager.saveAlts();
-			return "§aLogged In (Cracked)";
+			return "Â§aLogged In (Cracked)";
 		}
 		try {
 			b.logIn();
@@ -121,16 +121,16 @@ public enum Utilites {
 				}
 			}
 			GuiAltmanager.saveAlts();
-			displayText = "§aLogged In §8(§7" + SessionUtils.getSession().getUsername() + "§8)";
+			displayText = "Â§aLogged In Â§8(Â§7" + SessionUtils.getSession().getUsername() + "Â§8)";
 		} catch (AuthenticationException var7) {
 			if (!var7.getMessage().contains("Invalid username or password.")
 					&& !var7.getMessage().toLowerCase().contains("account migrated")) {
-				displayText = "§cCannot contact authentication server!";
+				displayText = "Â§cCannot contact authentication server!";
 			} else {
-				displayText = "§cWrong password! (" + name + ")";
+				displayText = "Â§cWrong password! (" + name + ")";
 			}
 		} catch (NullPointerException var8) {
-			displayText = "§cWeird error: This alt doesn't have a username!";
+			displayText = "Â§cWeird error: This alt doesn't have a username!";
 		}
 		return displayText;
 	}
